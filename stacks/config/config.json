@@ -1,14 +1,14 @@
 {
   "dev": {
     "rssUrl": "https://allinchamathjason.libsyn.com/rss",
-    "testAudioUrl": "https://content.libsyn.com/p/3/5/0/35042c3ec82b36e8/Your_First_Lesson.mp3?c_id=1940717&cs_id=1940717&response-content-type=audio%2Fmpeg&Expires=1702181915&Signature=Xdd0gMR4yrBicPgIb-4WNieNjFDbhOw~DjnL6yhu29K6OpUdGdGnv5GC640bfO8E80KpYNmdIIYDpaXacEUVshuI2pfQI1xxWBU-1CazqAMg~8wFBj5GP5StP4sBmhMoeON-oZh7lsGO2-RXtDqt8jdlY9ST2gBMqi68aUV~U0etI7sqDoVMXEu5Vr4i~QZTm2NCHxMQ6ger-jvAE~7VwGM44rrgQdH5KS~wONQj-bEOAo1MjC3oxFl8iNloFFaFTVZb0pNIDQNX8ZyLEX1UQEl5GccBX~3m8RcO2UMdzAwQb~FaEk8c3qC6MBRoc2jSZ9D9Uc54F3P4TpQxo6GMkA__&Key-Pair-Id=K1YS7LZGUP96OI",
+    "testAudioUrl": "https://podcast-public-sample-audio.s3.amazonaws.com/sample.mp3",
     "chunkSizeInSeconds": "30",
     "openAiApiUrl": "https://api.openai.com/v1/audio/transcriptions",
     "cronJobRate": "rate(1 minute)"
   },
   "prod": {
     "rssUrl": "https://allinchamathjason.libsyn.com/rss",
-    "testAudioUrl": "https://content.libsyn.com/p/3/5/0/35042c3ec82b36e8/Your_First_Lesson.mp3?c_id=1940717&cs_id=1940717&response-content-type=audio%2Fmpeg&Expires=1702181915&Signature=Xdd0gMR4yrBicPgIb-4WNieNjFDbhOw~DjnL6yhu29K6OpUdGdGnv5GC640bfO8E80KpYNmdIIYDpaXacEUVshuI2pfQI1xxWBU-1CazqAMg~8wFBj5GP5StP4sBmhMoeON-oZh7lsGO2-RXtDqt8jdlY9ST2gBMqi68aUV~U0etI7sqDoVMXEu5Vr4i~QZTm2NCHxMQ6ger-jvAE~7VwGM44rrgQdH5KS~wONQj-bEOAo1MjC3oxFl8iNloFFaFTVZb0pNIDQNX8ZyLEX1UQEl5GccBX~3m8RcO2UMdzAwQb~FaEk8c3qC6MBRoc2jSZ9D9Uc54F3P4TpQxo6GMkA__&Key-Pair-Id=K1YS7LZGUP96OI",
+    "testAudioUrl": "https://podcast-public-sample-audio.s3.amazonaws.com/sample.mp3",
     "chunkSizeInSeconds": "600",
     "openAiApiUrl": "https://api.openai.com/v1/audio/transcriptions",
     "cronJobRate": "rate(5 days)"

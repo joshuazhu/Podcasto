@@ -12,10 +12,10 @@ export const PodcastSchema = z.object({
   title: z.string(),
   summary: z.string(),
   url: z.string(),
-  videoUrl: z.string(),
-  videoSize: z.number(),
-  videoDuration: z.number(),
-  videoS3Location: z.string().optional(),
+  audioUrl: z.string(),
+  audioSize: z.number(),
+  audioDuration: z.number(),
+  audioS3Location: z.string().optional(),
   isoCreatedAt: z.string()
 })
 

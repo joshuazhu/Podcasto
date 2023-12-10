@@ -1,5 +1,6 @@
-import { StackContext, Cron, Table } from "sst/constructs";
+import { StackContext, Cron, Table, KinesisStream, Bucket } from "sst/constructs";
 import loadConfigs from "./config/loadConfigs";
+import { StartingPosition } from "aws-cdk-lib/aws-lambda";
 
 export function Core({ stack }: StackContext) {
   const configs = loadConfigs(stack.stage)
@@ -13,20 +14,39 @@ export function Core({ stack }: StackContext) {
     }
   })
 
+  const podcastAudioBucket = new Bucket(stack, "Podcasts-audio")
+
+  stack.addDefaultFunctionEnv({
+    AUDIO_BUCKET: podcastAudioBucket.bucketName
+  })
+
   const podcastTable = new Table(stack, "Podcasts", {
     fields: {
       id: "string",
       title: "string",
       summary: "string",
       url: "string",
-      videoUrl: "string",
-      videoSize: "number",
-      videoDuration: "number",
-      videoS3Location: "string",
+      audioUrl: "string",
+      audioSize: "number",
+      audioDuration: "number",
+      audioS3Location: "string",
       isoCreatedAt: "string"
     },
     primaryIndex: { partitionKey: "id"},
+    stream: 'new_image',
+    consumers: {
+      podcastDBStreamHandler: {
+        function: "packages/functions/src/podcastDBStreamHandler/index.handler",
+        cdk: {
+          eventSource: {
+            startingPosition: StartingPosition.TRIM_HORIZON
+          }
+        },
+      }
+    }
   })
+
+  podcastTable.attachPermissionsToConsumer("podcastDBStreamHandler", ["s3"])
 
   const podcastSubscriber = new Cron(stack, "cron", {
     schedule: configs.cronJobRate,

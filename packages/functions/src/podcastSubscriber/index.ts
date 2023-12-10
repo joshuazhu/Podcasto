@@ -3,7 +3,7 @@ import { CustomFeed, CustomItem, PodcastType } from '../types';
 import { getLatestPodcastsFromDB } from './getPodcastsFromDB';
 import { DB } from '../libs/dynamodb';
 import { Config } from 'sst/node/config';
-import { Table } from "sst/node/table";
+import { Table } from 'sst/node/table';
 
 const durationToSeconds = (duration: string) => {
   // assume duration is larger than one minute and smaller than one day
@@ -25,15 +25,15 @@ const mapPodcast = (item: CustomItem & Parser.Item): PodcastType => ({
   title: item.title || '',
   summary: item.summary || '',
   url: item.link || '',
-  videoUrl: (item.enclosure?.url || '').split('https').reverse()[0],
-  videoSize: item.enclosure?.length || 0,
-  videoDuration: durationToSeconds(item.itunes.duration || '0'),
-  videoS3Location: '',
+  audioUrl: (item.enclosure?.url || '').split('https').reverse()[0],
+  audioSize: Number.parseInt(item.enclosure?.length?.toString() || '0'),
+  audioDuration: durationToSeconds(item.itunes.duration || '0'),
+  audioS3Location: '',
   isoCreatedAt: item.isoDate || new Date().toISOString()
 });
 
 export async function handler() {
-  try{
+  try {
     const parser: Parser<CustomFeed, CustomItem> = new Parser({
       customFields: {
         feed: [],
@@ -41,26 +41,37 @@ export async function handler() {
       }
     });
 
-    const feed = await parser.parseURL(process.env.RSS_URL || "");
-    const latestPodcast = await getLatestPodcastsFromDB()
+    console.log('Fetching RSS feeds')
+    const feed = await parser.parseURL(process.env.RSS_URL || '');
+    console.log(`${feed.items.length} podcasts found`)
+
+    const latestPodcast = await getLatestPodcastsFromDB();
     const podcasts = feed.items.map(mapPodcast);
 
-    const newPodcasts = !!latestPodcast ? podcasts.filter(p => p.isoCreatedAt > latestPodcast.isoCreatedAt) : podcasts;
+    const newPodcasts = !!latestPodcast
+      ? podcasts.filter((p) => p.isoCreatedAt >= latestPodcast.isoCreatedAt)
+      : podcasts;
 
-    let requests: Promise<void>[]
+    console.log(`${newPodcasts.length} new podcasts found!`)
 
-    if(Config.STAGE !== "prod") {
-      const newTestPodcast = newPodcasts[0]
-      requests = [DB.putItem(Table.Podcasts.tableName, {
-        ...newTestPodcast,
-        videoUrl: process.env.testAudiUrl
-      })]
-    } else {
-      requests = newPodcasts.map(p => DB.putItem(Table.Podcasts.tableName, p))
+    let requests: Promise<void>[];
+
+    if (newPodcasts.length > 0) {
+      if (Config.STAGE !== 'prod') {
+        requests = [
+          DB.putItem(Table.Podcasts.tableName, {
+            ...newPodcasts[0],
+            audioUrl: process.env.TEST_AUDIO_URL
+          })
+        ];
+      } else {
+        requests = newPodcasts.map((p) =>
+          DB.putItem(Table.Podcasts.tableName, p)
+        );
+      }
+      await Promise.all(requests);
     }
-
-    await Promise.all(requests)
-  }catch(e) {
-    console.log('error', e)
+  } catch (e) {
+    console.log('error', e);
   }
 }
