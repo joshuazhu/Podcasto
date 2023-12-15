@@ -1,5 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import {
   NativeScalarAttributeValue,
 } from "@aws-sdk/util-dynamodb";
@@ -23,6 +23,20 @@ class DynamoDB {
 
     if (!response.Items) return [];
     return response.Items;
+  }
+
+  async getByKey(tableName: string, keyName: string, keyValue: string): Promise<Record<string, any> | undefined> {
+    const params = {
+      TableName: tableName,
+      Key: {
+        [keyName]: keyValue,
+      },
+    };
+
+    const command = new GetCommand(params);
+    const response = await this.client.send(command);
+
+    return response.Item
   }
 
   async putItem(

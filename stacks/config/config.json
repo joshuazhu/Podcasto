@@ -2,15 +2,17 @@
   "dev": {
     "rssUrl": "https://allinchamathjason.libsyn.com/rss",
     "testAudioUrl": "https://podcast-public-sample-audio.s3.amazonaws.com/sample.mp3",
+    "testAudioDuration": "209",
     "chunkSizeInSeconds": "30",
     "openAiApiUrl": "https://api.openai.com/v1/audio/transcriptions",
-    "cronJobRate": "rate(1 minute)"
+    "cronJobRate": "rate(5 days)"
   },
   "prod": {
     "rssUrl": "https://allinchamathjason.libsyn.com/rss",
     "testAudioUrl": "https://podcast-public-sample-audio.s3.amazonaws.com/sample.mp3",
     "chunkSizeInSeconds": "600",
     "openAiApiUrl": "https://api.openai.com/v1/audio/transcriptions",
-    "cronJobRate": "rate(5 days)"
+    "cronJobRate": "rate(5 days)",
+    "testAudioDuration": "209"
   }
 }

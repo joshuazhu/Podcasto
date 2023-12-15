@@ -1,6 +1,6 @@
 import Parser from 'rss-parser';
 import { CustomFeed, CustomItem, PodcastType } from '../types';
-import { getLatestPodcastsFromDB } from './getPodcastsFromDB';
+import { getLatestPodcastsFromDB } from '../libs/dynamodbFunctions';
 import { DB } from '../libs/dynamodb';
 import { Config } from 'sst/node/config';
 import { Table } from 'sst/node/table';

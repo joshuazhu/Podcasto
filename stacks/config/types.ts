@@ -4,4 +4,5 @@ export type ConfigType = {
   chunkSizeInSeconds: string
   openAiApiUrl: string
   cronJobRate: `rate(${string})` | `cron(${string})`
+  testAudioDuration: string
 }
