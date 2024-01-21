@@ -7,6 +7,8 @@ export type CustomItem = {
   };
 };
 
+export const AudioProcessStatus = z.enum(["In Progress", "Succeed", "Failed"])
+
 export const PodcastSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -19,6 +21,14 @@ export const PodcastSchema = z.object({
   isoCreatedAt: z.string()
 })
 
+export const PodcastAudioProcessSchema = z.object({
+  id: z.string(),
+  isoCreatedAt: z.string(),
+  isoUpdatedAt: z.string().optional(),
+  numberOfProcessedChunks: z.number(),
+  totalNumberOfChunks: z.number(),
+  processStatus: AudioProcessStatus
+})
+
 export type PodcastType = z.infer<typeof PodcastSchema>
-
-
+export type PodcastAudioProcessType = z.infer<typeof PodcastAudioProcessSchema>
