@@ -155,7 +155,7 @@ export function Core({ stack }: StackContext) {
       numberSucceedChunks: 'number'
     },
     primaryIndex: { partitionKey: 'id' },
-    stream: 'new_image',
+    stream: 'new_and_old_images',
     consumers: {
       podcastAudioProcessSucceedDBStreamHandler: {
         function: podcastAudioProcessSucceedDBStreamHandler,
